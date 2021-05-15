@@ -1,4 +1,5 @@
 <?php include "../includes/header.php"; ?>
+
   <!-- Main Sidebar Container -->
 
 <?php include "../includes/sidebar.php"; ?>
@@ -20,8 +21,70 @@
         </div><!-- /.row -->
       <!-- container -->
         <div class="container bg-white p-4">
+
+        <!-- send data into database -->
+
+        <?php 
+        include "../includes/config.php"; 
+        
+        if(isset($_POST['add_merchants'])){
+
+          $merchant_name = $_POST['merchant_name'];
+          $company_name = $_POST['company_name'];
+          $tin_number = $_POST['tin_number'];
+          $licence_number = $_POST['licence_number'];
+          $postal_address = $_POST['postal_address'];
+          $bussiness_phone = $_POST['business_phone_number'];
+          $merchant_status = $_POST['merchant_status'];
+          $business_type = $_POST['business_type'];
+          $msdn = $_POST['msdn'];
+          $business_email = $_POST['business_email'];
+
+
+          $sql ="INSERT INTO `merchants`(
+           `user_id`, `company_name`, 
+           `tin_number`, `licence_number`,
+            `postal_adress`, `b_phone_number`, 
+            `status`, `business_type`, 
+            `msdn`, `business_mail`) VALUES (
+                '{$merchant_name}', '{$company_name}', '{$tin_number}','{$licence_number}',
+                '{$postal_address}', '{$bussiness_phone}', '{$merchant_status}', '{$business_type}',
+                '{$msdn}', '{$business_email}'
+
+            )";
+            $query = mysqli_query($conn, $sql);
+
+            if(!$query){
+              die(mysqli_connect_error($conn));
+            }
+            else{
+              $response = array(
+                
+                'message'=>'merchant added successfully!!'
+              );
+            }
+        }
+        
+        $users_query = "SELECT * FROM `users` ORDER BY full_name";
+        $result = mysqli_query($conn, $users_query);
+       
+        ?>
+
+
+        <!-- Messge -->
+          <?php if(!empty($response)) {?>
+          <div class="alert alert-info" role="alert">
+  
+          <?php echo $response['message']; ?>
+
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </div>
+          <?php }?>
+
         <!--  -->
-        <form action="">
+        <form action="" method="POST">
         
           <div class="row  mb-3">
               <div class="col-md-6">
@@ -29,7 +92,10 @@
                   <label for="merchant_name" class="control-label text-right small text-capitalize">Merchant name <span class="text-danger">*</span></label>
                   <select class="custom-select" name="merchant_name" id="merchant_name">
                   <option disabled >Merchant name</option>
-                  <option value=""></option>
+                  <?php while($row = mysqli_fetch_array($result)):;?>
+                  <option value="<?php echo $row['userId']?>"><?php echo $row['full_name'] ?></option>
+
+                  <?php endwhile ?>
                   
                   </select>
                   </div>
@@ -118,7 +184,7 @@
           </div>
 
           <div class="input-group-sm">
-          <button type="submit" class="btn btn-primary btn-sm"> <i class="fas fa-plus-circle" arial-hidden="True"></i> Add Merchant</button>
+          <button type="submit" name="add_merchants" class="btn btn-primary btn-sm"> <i class="fas fa-plus-circle" arial-hidden="True"></i> Add Merchant</button>
           </div>
 
         </form>
