@@ -188,7 +188,7 @@ $setting = $base_url."account setting/";
                   <i class="far fa-circle nav-icon"></i>
                   <p>Active merchants</p>
                 </a>
-                <a href="<?php echo $merchants; ?>banned.merchant.php" class="nav-link">
+                <a href="<?php echo $merchants; ?>banned.merchants.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Banned merchants</p>
                 </a>

@@ -64,7 +64,7 @@
               );
             }
         }
-        
+        // Get all users from database
         $users_query = "SELECT * FROM `users` ORDER BY full_name";
         $result = mysqli_query($conn, $users_query);
        
@@ -92,6 +92,8 @@
                   <label for="merchant_name" class="control-label text-right small text-capitalize">Merchant name <span class="text-danger">*</span></label>
                   <select class="custom-select" name="merchant_name" id="merchant_name">
                   <option disabled >Merchant name</option>
+                  
+                  <!-- filter users data to select field -->
                   <?php while($row = mysqli_fetch_array($result)):;?>
                   <option value="<?php echo $row['userId']?>"><?php echo $row['full_name'] ?></option>
 
